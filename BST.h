@@ -22,50 +22,36 @@ public:
   void kill(TreeNodePtr);
 
 void BST::insert_node(int value) {
-  int inserted = 0;
-  TreeNodePtr new_node, t;
-  new_node = new TreeNode(value);
-  if (new_node) {
-   
-      if(First Node){
-          rootPtr=new_node;
-      }
-      else{
-          t=rootPtr;
-          while(inserted==0){//insert =0
-            if (t->get_value() >=value){
-              if(t->move_left()!=NULL) t=t->move_left();
-            }
-              else{
-                t->set_left(new_node);
-                inserted=1;
-            }
+    TreeNodePtr new_node = new TreeNode(value);
 
-            else{
-              if (t->get_value() <=value){
-              if(t->move_right()!=NULL) t=t->move_right();
-            }
-              else{
-                
+    if (rootPtr == NULL) {   
+        rootPtr = new_node;
+    } 
+    else {
+        TreeNodePtr t = rootPtr;
 
+        while (true) {
+            if (value < t->get_value()) {
+                if (t->move_left() != NULL)
+                    t = t->move_left();
+                else {
+                    t->set_left(new_node);
+                    break;
+                }
+            } 
+            else {
+                if (t->move_right() != NULL)
+                    t = t->move_right();
+                else {
+                    t->set_right(new_node);
+                    break;
+                }
             }
-
-            }
-          }
-              //once the location is found -->inserted=1
-              //1.should it go left or right
-              //2. should it be inserted, if availabble inserted, if not move
-              //3. once inserted make insert=1
-              
-              
-              
-          }// end while
-      
-      //}//ene else
-        ++size;
-  }//end  new node
+        }
+        cout << value << "inserted" << endl << endl; 
+    }
+    size++;
 }
-
 
 void BST::print(int option) {
   switch (option) {
@@ -92,9 +78,13 @@ void BST::print(int option) {
     postOrder(rootPtr);
     cout << endl;
     cout << "Tree" << endl;
-      default:
     printTree(rootPtr,0);
     cout << endl;
+    break;
+    default:
+    printTree(rootPtr,0);
+    cout << endl;
+
   }
 }
 
@@ -105,8 +95,8 @@ BST::BST() {
 }
 
 BST::~BST() { 
-  cout << "Kill BST" << endl; 
-    
+    cout << "Kill BST" << endl; 
+    kill(rootPtr);
 }
 
 void inOrder(TreeNodePtr treePtr) {
@@ -120,34 +110,41 @@ void inOrder(TreeNodePtr treePtr) {
 } // end function
   //printTree(rootPtr,0);
 
-void printTree(TreeNodePtr treePtr,int l) {
-  // TreeNodePtr treePtr=rootPtr;
-        // end if
-} // end function
+void printTree(TreeNodePtr treePtr, int level) {
+    if (treePtr == NULL) return;
+
+    printTree(treePtr->move_right(), level + 1);
+
+    for(int i = 0; i < level; i++){
+        cout << "   ";
+    }
+
+    cout << treePtr->get_value() << endl << endl; // extra spacing
+    printTree(treePtr->move_left(), level + 1);
+}
 
 
 void postOrder(TreeNodePtr treePtr) {
-  // TreeNodePtr treePtr=rootPtr;
-  if (treePtr) {
- 
- 
-   
-  }                                          // end if
-} // end function
+    if (treePtr) {
+        postOrder(treePtr->move_left());
+        postOrder(treePtr->move_right());
+        cout << setw(3) << treePtr->get_value();
+    }
+}
 
 void kill(TreeNodePtr treePtr) {
-  // TreeNodePtr 
-  if(treePtr){
-       //delete everything
-        
-    }                                          // end if
-} // end function
+    if(treePtr){
+        kill(treePtr->move_left());
+        kill(treePtr->move_right());
+        delete treePtr;
+    }
+}
 
 void preOrder(TreeNodePtr treePtr) {
-  if(treePtr){
-  // TreeNodePtr treePtr=rootPtr;
-   
- 
-  }                                          // end if
-} // end function
+    if(treePtr){
+        cout << setw(3) << treePtr->get_value();
+        preOrder(treePtr->move_left());
+        preOrder(treePtr->move_right());
+    }
+}
 

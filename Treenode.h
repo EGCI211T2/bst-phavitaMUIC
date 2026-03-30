@@ -30,6 +30,5 @@ TreeNode::TreeNode(int x){
 
 }
 TreeNode::~TreeNode(){
-  cout<<"Deleting "<< data<<endl;
-  
+    cout << "Deleting " << data << endl;
 }
